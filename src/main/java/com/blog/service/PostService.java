@@ -1,0 +1,46 @@
+package com.blog.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.blog.model.Post;
+import com.blog.repository.PostRepository;
+
+import jakarta.persistence.PostRemove;
+
+@Service
+public class PostService{
+
+    @Autowired
+    private final PostRepository postRepository;
+    public PostService(PostRepository postRepository){
+        this.postRepository = postRepository;
+    }
+
+    public Post create(Post post){
+        return postRepository.save(post);
+    }
+
+    public List<Post> getAllPost(){
+        return postRepository.findAll();
+    }
+
+    public Optional<Post> getById(Long id){
+        return postRepository.findById(id);
+    }
+
+    public Post updatePost(Long id, Post updatedPost){
+        return postRepository.findById(id).map(post -> {
+            post.setTitle(updatedPost.getTitle());
+            post.setContent(updatedPost.getContent());
+            return postRepository.save(post);
+        }).orElseThrow(()-> new RuntimeException("Post not found"));
+    }
+    
+    public void deletePost(Long id){
+        postRepository.deleteById(id);
+    }
+}
