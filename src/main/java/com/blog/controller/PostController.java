@@ -45,7 +45,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatedPost){
+    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatedPost) {
         return ResponseEntity.ok(postService.updatePost(id, updatedPost));
     }
 
@@ -54,6 +54,7 @@ public class PostController {
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/test")
     public String test() {
         return "API is working!";
