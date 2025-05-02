@@ -7,6 +7,7 @@ import com.blog.service.PostService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
-        return ResponseEntity.ok(postService.create(post));
+    public ResponseEntity<Post> createPost(@RequestBody Post post, Principal principal) {
+        return ResponseEntity.ok(postService.create(post, principal.getName()));
     }
 
     @GetMapping
