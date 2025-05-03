@@ -50,7 +50,7 @@ public class PostController {
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatedPost) {
         return ResponseEntity.ok(postService.updatePost(id, updatedPost));
     }
-
+    
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
