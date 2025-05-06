@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,8 @@ import com.blog.model.Role;
 import com.blog.model.User;
 import com.blog.repository.UserRepository;
 import com.blog.service.JwtUtil;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
+    public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Username already exists");
         }
@@ -48,13 +51,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@Valid @RequestBody User user) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-        String token = jwtUtil.generateToken((UserDetails)authentication.getPrincipal());
+        String token = jwtUtil.generateToken((UserDetails) authentication.getPrincipal());
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/user/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
