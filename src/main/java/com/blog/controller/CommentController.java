@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.model.Comment;
-import com.blog.repository.CommentRepository;
 import com.blog.service.CommentService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/posts/{postId}/comments")
@@ -25,7 +26,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody Comment comment,
+    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @Valid @RequestBody Comment comment,
             Principal principal) {
         return ResponseEntity.ok(commentService.addComment(postId, comment.getContent(), principal.getName()));
     }

@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blog.model.Post;
 import com.blog.service.PostService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
@@ -30,7 +32,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post, Principal principal) {
+    public ResponseEntity<Post> createPost(@Valid @RequestBody Post post, Principal principal) {
         return ResponseEntity.ok(postService.create(post, principal.getName()));
     }
 
@@ -47,10 +49,10 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatedPost) {
+    public ResponseEntity<Post> updatePost(@PathVariable Long id, @Valid @RequestBody Post updatedPost) {
         return ResponseEntity.ok(postService.updatePost(id, updatedPost));
     }
-    
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {

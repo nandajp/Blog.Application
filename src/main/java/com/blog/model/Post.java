@@ -11,15 +11,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Title is mandatory")
     private String title;
+
+    @NotBlank(message = "Content is mandatory")
     @Column(columnDefinition = "TEXT")
     private String content;
+    
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

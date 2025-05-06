@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Comment {
@@ -17,6 +18,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Content is mandatory")
     @Column(columnDefinition = "TEXT")
     private String content;
 
